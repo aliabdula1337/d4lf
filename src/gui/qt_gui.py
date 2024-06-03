@@ -2,7 +2,7 @@ import logging
 import os
 import pathlib
 import sys
-
+from src import __version__
 from PyQt6.QtCore import QObject, QRegularExpression, QRunnable, QThreadPool, pyqtSignal, pyqtSlot
 from PyQt6.QtGui import QColor, QIcon, QRegularExpressionValidator
 from PyQt6.QtWidgets import (
@@ -30,16 +30,15 @@ from src.logger import Logger
 THREADPOOL = QThreadPool()
 D4TRADE_TABNAME = "diablo.trade"
 MAXROLL_D4B_MOBALYTICS_TABNAME = "maxroll / d4builds / mobalytics"
-
+ABOUT_TABNAME = "About"
 
 def start_gui():
     os.environ["QT_LOGGING_RULES"] = "qt.qpa.window=false"
     app = QApplication([])
-    app.setWindowIcon(QIcon(str(pathlib.Path("assets/logo.png"))))
+    app.setWindowIcon(QIcon(str(pathlib.Path("assets/logo.svg"))))
     window = Gui()
     window.show()
     sys.exit(app.exec())
-
 
 @singleton
 class Gui(QMainWindow):
@@ -49,7 +48,6 @@ class Gui(QMainWindow):
         self.setWindowTitle("D4LF")
         self.setGeometry(100, 100, 700, 700)
 
-        # Center the window on the screen
         screen = QApplication.primaryScreen()
         rect = screen.geometry()
         self.move(rect.width() // 2 - self.width() // 2, rect.height() // 2 - self.height() // 2)
@@ -60,6 +58,7 @@ class Gui(QMainWindow):
 
         self._maxroll_or_d4builds_tab()
         self._diablo_trade_tab()
+        self._about_tab()
 
         Logger.addHandler(self.maxroll_log_handler)
         self.tab_widget.currentChanged.connect(self._handle_tab_changed)
@@ -67,7 +66,7 @@ class Gui(QMainWindow):
 
     def _diablo_trade_tab(self):
         tab_diablo_trade = QWidget(self)
-        self.tab_widget.addTab(tab_diablo_trade, "diablo.trade")
+        self.tab_widget.addTab(tab_diablo_trade, D4TRADE_TABNAME)
 
         layout = QVBoxLayout(tab_diablo_trade)
 
@@ -136,7 +135,7 @@ class Gui(QMainWindow):
             "https://diablo.trade/listings/items?exactPrice=true&rarity=legendary&sold=true&sort=newest\n\n"
             "Please note that only legendary items are supported at the moment. The listing must also have an exact price.\n"
             "You can create such a filter by using the one above as a base and then add your custom data to it.\n"
-            f"It will then create a file based on the listings in: {IniConfigLoader().user_dir / "profiles"}"
+            f"It will then create a file based on the listings in: {IniConfigLoader().user_dir / 'profiles'}"
         )
         instructions_text.setReadOnly(True)
         font_metrics = instructions_text.fontMetrics()
@@ -223,7 +222,7 @@ class Gui(QMainWindow):
             "https://d4builds.gg/builds/ef414fbd-81cd-49d1-9c8d-4938b278e2ee\n"
             "or\n"
             "https://mobalytics.gg/diablo-4/builds/barbarian/bash-bleed-barbarian-guide\n\n"
-            f"It will create a file based on the label of the build in the planer in: {IniConfigLoader().user_dir / "profiles"}\n\n"
+            f"It will create a file based on the label of the build in the planer in: {IniConfigLoader().user_dir / 'profiles'}\n\n"
             "For d4builds you need to specify your browser in the params.ini file"
         )
         instructions_text.setReadOnly(True)
@@ -233,6 +232,29 @@ class Gui(QMainWindow):
         layout.addWidget(instructions_text)
 
         tab_maxroll.setLayout(layout)
+
+    def _about_tab(self):
+        tab_about = QWidget(self)
+        self.tab_widget.addTab(tab_about, ABOUT_TABNAME)
+
+        layout = QVBoxLayout(tab_about)
+
+        version_label = QLabel(__version__)
+        layout.addWidget(version_label)
+
+        about_text = QTextEdit()
+        about_text.setText(
+            "D4LF - Diablo 4 Loot Filter\n"
+            "This tool helps you manage and import loot filters and build guides from various sources.\n"
+        )
+        about_text.setReadOnly(True)
+        layout.addWidget(about_text)
+
+        toggle_button = QPushButton("Toggle Dark Mode")
+        toggle_button.clicked.connect(self._toggle_dark_mode)
+        layout.addWidget(toggle_button)
+
+        tab_about.setLayout(layout)
 
     @staticmethod
     def _open_userconfig_directory():
@@ -274,7 +296,6 @@ class Gui(QMainWindow):
                 }
             """)
 
-
 class _CustomTabBar(QTabBar):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -298,7 +319,6 @@ class _CustomTabBar(QTabBar):
             color = "grey" if not self.tab_switching_enabled and index != self.currentIndex() else "black"
             self.setTabTextColor(index, QColor(color))
 
-
 class _GuiLogHandler(logging.Handler):
     def __init__(self, text_widget):
         super().__init__()
@@ -307,7 +327,6 @@ class _GuiLogHandler(logging.Handler):
     def emit(self, record):
         log_entry = self.format(record)
         self.text_widget.append(log_entry)
-
 
 class _Worker(QRunnable):
     def __init__(self, fn, *args, **kwargs):
@@ -322,10 +341,8 @@ class _Worker(QRunnable):
         self.fn(*self.args, **self.kwargs)
         self.signals.finished.emit()
 
-
 class _WorkerSignals(QObject):
     finished = pyqtSignal()
-
 
 if __name__ == "__main__":
     os.chdir(pathlib.Path(__file__).parent.parent.parent)
