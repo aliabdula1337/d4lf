@@ -1,7 +1,5 @@
 # ![logo](assets/logo.png)
 
-## Diablo 4 Loot Filter
-
 Filter items and sigils in your inventory based on affixes, aspects, and thresholds of their values.
 
 For questions, feature requests, or issue reports, join the [Discord](https://discord.gg/YyzaPhAN6T) or use [GitHub Issues](https://github.com/aeon0/d4lf/issues).
