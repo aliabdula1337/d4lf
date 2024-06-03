@@ -29,8 +29,9 @@ from src.logger import Logger
 
 THREADPOOL = QThreadPool()
 D4TRADE_TABNAME = "diablo.trade"
-MAXROLL_D4B_MOBALYTICS_TABNAME = "maxroll / d4builds / mobalytics"
+MAXROLL_D4B_MOBALYTICS_TABNAME = "maxroll | d4builds | mobalytics"
 ABOUT_TABNAME = "About"
+
 
 def start_gui():
     os.environ["QT_LOGGING_RULES"] = "qt.qpa.window=false"
@@ -39,6 +40,7 @@ def start_gui():
     window = Gui()
     window.show()
     sys.exit(app.exec())
+
 
 @singleton
 class Gui(QMainWindow):
@@ -244,8 +246,7 @@ class Gui(QMainWindow):
 
         about_text = QTextEdit()
         about_text.setText(
-            "D4LF - Diablo 4 Loot Filter\n"
-            "This tool helps you manage and import loot filters and build guides from various sources.\n"
+            "D4LF - Diablo 4 Loot Filter\n" "This tool helps you manage and import loot filters and build guides from various sources.\n"
         )
         about_text.setReadOnly(True)
         layout.addWidget(about_text)
@@ -296,6 +297,7 @@ class Gui(QMainWindow):
                 }
             """)
 
+
 class _CustomTabBar(QTabBar):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -319,6 +321,7 @@ class _CustomTabBar(QTabBar):
             color = "grey" if not self.tab_switching_enabled and index != self.currentIndex() else "black"
             self.setTabTextColor(index, QColor(color))
 
+
 class _GuiLogHandler(logging.Handler):
     def __init__(self, text_widget):
         super().__init__()
@@ -327,6 +330,7 @@ class _GuiLogHandler(logging.Handler):
     def emit(self, record):
         log_entry = self.format(record)
         self.text_widget.append(log_entry)
+
 
 class _Worker(QRunnable):
     def __init__(self, fn, *args, **kwargs):
@@ -341,8 +345,10 @@ class _Worker(QRunnable):
         self.fn(*self.args, **self.kwargs)
         self.signals.finished.emit()
 
+
 class _WorkerSignals(QObject):
     finished = pyqtSignal()
+
 
 if __name__ == "__main__":
     os.chdir(pathlib.Path(__file__).parent.parent.parent)
