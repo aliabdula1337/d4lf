@@ -4,7 +4,10 @@ import traceback
 
 import keyboard
 from beautifultable import BeautifulTable
-from PIL import Image  # noqa #  Note: Somehow needed, otherwise the binary has an issue with tesserocr
+from PIL import Image  # noqa # Note: Somehow needed, otherwise the binary has an issue with tesserocr
+
+# Ensure the 'src' directory is in the system path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src import __version__
 from src.cam import Cam
@@ -17,7 +20,6 @@ from src.utils.misc import wait
 from src.utils.ocr.read import load_api
 from src.utils.process_handler import safe_exit
 from src.utils.window import WindowSpec, start_detecting_window
-
 
 def main():
     # Create folders for logging stuff
@@ -57,7 +59,6 @@ def main():
 
     overlay = Overlay()
     overlay.run()
-
 
 if __name__ == "__main__":
     Logger.init("debug")  # We need this to have the logger initialized before we start doing other stuff

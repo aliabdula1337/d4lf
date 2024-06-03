@@ -1,7 +1,11 @@
 # ![logo](assets/logo.png)
 
-Filter items and sigils in your inventory based on affixes, aspects and thresholds of their values. For questions,
-feature request or issue reports join the [discord](https://discord.gg/YyzaPhAN6T) or use github issues.
+## Diablo 4 Loot Filter
+
+Filter items and sigils in your inventory based on affixes, aspects, and thresholds of their values.
+
+For questions, feature requests, or issue reports, join the [Discord](https://discord.gg/YyzaPhAN6T) or use [GitHub Issues](https://github.com/aeon0/d4lf/issues).
+
 
 ![sample](assets/thumbnail.jpg)]
 
@@ -340,49 +344,79 @@ This setup is helpful to facilitate updating to a new version as you don't need 
 **In the event of breaking changes to the configuration, there will be a major release, such as updating from 2.x.x to
 3.x.x.**
 
-## Develop
+## Development Guide
 
 ### Python Setup
 
-- You can use [miniconda](https://docs.conda.io/projects/miniconda/en/latest/) or just plain python.
+You can set up your Python environment using either [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/) or standard Python.
 
-Conda setup:
+#### Conda Setup
 
-```bash
-git clone https://github.com/aeon0/d4lf
-cd d4lf
-conda env create -f environment.yml
-conda activate d4lf
-python -m src.main
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/aeon0/d4lf
+   cd d4lf
+   ```
+2. Create the Conda environment:
+   ```bash
+   conda env create -f environment.yml
+   ```
+3. Activate the environment:
+   ```bash
+   conda activate d4lf
+   ```
+4. Run the main script:
+   ```bash
+   python -m src.main
+   ```
 
-Python setup (windows, linux venv activation differs):
+#### Python Setup (Windows, Linux venv activation differs)
 
-```bash
-git clone https://github.com/aeon0/d4lf
-cd d4lf
-python -m venv venv
-venv\Scripts\activate
-python -m pip install -r requirements.txt
-python -m src.main
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/aeon0/d4lf
+   cd d4lf
+   ```
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   ```
+3. Activate the virtual environment:
+   ```bash
+   venv\Scripts\activate
+   ```
+4. Install the required packages:
+   ```bash
+   python -m pip install -r requirements.txt
+   ```
+5. Run the main script:
+   ```bash
+   python -m src.main
+   ```
 
 ### Formatting & Linting
 
-Ruff is used for linting and auto formatting. You can run it with:
+We use Ruff for linting and auto-formatting. To format and check your code, run the following commands:
 
-```bash
-ruff format
-```
-
-```bash
-ruff check
-```
-
-Setup VS Code by using the ruff extension. Also turn on "trim trailing whitespaces" is VS Code settings.
+- Format code:
+  ```bash
+  ruff format
+  ```
+- Check code:
+  ```bash
+  ruff check
+  ```
+ 
+To set up VS Code for optimal use with Ruff, install the [Ruff extension](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff) and enable the "trim trailing whitespaces" setting in your VS Code preferences.
 
 ## Credits
 
 - Icon based of: [CarbotAnimations](https://www.youtube.com/carbotanimations/about)
 - Some of the OCR code is originally from [@gleed](https://github.com/aliig). Good guy.
 - Names and textures for matching from [Blizzard](https://www.blizzard.com)
+
+## Legal
+
+d4lf is not affiliated with Blizzard Entertainment and does not represent the views or opinions of Blizzard Entertainment or anyone officially involved in creating or managing Diablo IV.
+
+Diablo IV and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc. ©
